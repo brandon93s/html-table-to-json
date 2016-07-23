@@ -1,4 +1,4 @@
-# <%= moduleName %> [![Build Status](https://travis-ci.org/<%= githubUsername %>/<%= moduleName %>.svg?branch=master)](https://travis-ci.org/<%= githubUsername %>/<%= moduleName %>)
+# html-table-to-json [![Build Status](https://travis-ci.org/brandon93s/html-table-to-json.svg?branch=master)](https://travis-ci.org/brandon93s/html-table-to-json)
 
 >
 
@@ -6,23 +6,23 @@
 ## Install
 
 ```
-$ npm install --save <%= moduleName %>
+$ npm install --save html-table-to-json
 ```
 
 
 ## Usage
 
 ```js
-const <%= camelModuleName %> = require('<%= moduleName %>');
+const htmlTableToJson = require('html-table-to-json');
 
-<%= camelModuleName %>('unicorns');
+htmlTableToJson('unicorns');
 //=> 'unicorns & rainbows'
 ```
 
 
 ## API
 
-### <%= camelModuleName %>(input, [options])
+### htmlTableToJson(input, [options])
 
 #### input
 
