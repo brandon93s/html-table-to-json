@@ -1,6 +1,6 @@
 {
   "name": "html-table-to-json",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "license": "MIT",
   "repository": "brandon93s/html-table-to-json",
@@ -19,7 +19,9 @@
     "index.js"
   ],
   "keywords": [
-    "html", "table", "json"
+    "html",
+    "table",
+    "json"
   ],
   "dependencies": {},
   "devDependencies": {
