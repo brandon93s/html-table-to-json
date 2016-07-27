@@ -23,7 +23,9 @@
     "table",
     "json"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "cheerio": "^0.20.0"
+  },
   "devDependencies": {
     "ava": "^0.12.0"
   }
