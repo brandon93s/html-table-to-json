@@ -1,7 +1,8 @@
 # html-table-to-json [![Build Status](https://travis-ci.org/brandon93s/html-table-to-json.svg?branch=master)](https://travis-ci.org/brandon93s/html-table-to-json)
 
->
+> Extracts tables from a provided html snippet and converts them to JSON objects
 
+*Note: Currently always returns an array of results regardless of table count*
 
 ## Install
 
@@ -13,33 +14,57 @@ $ npm install --save html-table-to-json
 ## Usage
 
 ```js
-const htmlTableToJson = require('html-table-to-json');
+const HtmlTableToJson = require('html-table-to-json');
 
-htmlTableToJson('unicorns');
-//=> 'unicorns & rainbows'
+const jsonTables = new HtmlTableToJson(`
+        <table>
+            <tr>
+                <th>Animal</th>
+                <th>Color</th>
+                <th>Name</th>
+            </tr>
+            <tr>
+                <td>Unicorn</td>
+                <td>Pink</td>
+                <td>Billy</td>
+            </tr>
+            <tr>
+                <td>Walrus</td>
+                <td>Orange</td>
+                <td>Sue</td>
+            </tr>
+        </table>
+    `);
+
+console.log(jsonTables.results);
+/* => [[
+ *      {Animal: 'Unicorn', Color: 'Pink', Name: 'Billy'},
+ *      {Animal: 'Walrus', Color: 'Orange', Name: 'Sue'}
+ *    ]]
+ */
+
+console.log(jsonTables.count);
+// => 1
+
 ```
 
 
 ## API
 
-### htmlTableToJson(input, [options])
+### new HtmlTableToJson(input [,options])
+### HtmlTableToJson.factory(input [,options])
 
 #### input
 
 Type: `string`
 
-Lorem ipsum.
+Any html snippet.
 
 #### options
 
-##### foo
-
-Type: `boolean`<br>
-Default: `false`
-
-Lorem ipsum.
+##### // todo
 
 
 ## License
 
-MIT © [<%= name %>](https://github.com/<%= githubUsername %>)
+MIT © [Brandon Smith](https://github.com/brandon93s)
