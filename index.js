@@ -2,57 +2,72 @@
 
 const cheerio = require('cheerio');
 
-module.exports = function (html, options) {
-  if (typeof html !== 'string') {
-    throw new TypeError('Expected a string');
+class HtmlTableToJson {
+  constructor(html, opts) {
+    if (typeof html !== 'string')
+      throw new TypeError('html input must be a string');
+
+    this.html = html;
+    this.opts = opts;
+
+    this._$ = cheerio.load(this.html);
+    this._results = [];
+    this._headers = [];
+    this._count = null;
+
+    this._process();
   }
 
-  options = options || {};
+  static factory(html, opts) {
+    return new HtmlTableToJson(html, opts);
+  }
 
-  const $ = cheerio.load(html);
+  get count() {
+    return Number.isInteger(this._count) ? this._count : (this._count = this._$('table').get().length);
+  }
 
-  let results = [];
-  $('table').each((i, element) => results.push(processTable($, element, options)));
+  get results() {
+    return this._results;
+  }
 
-  if (options.unwrapTable)
-    return results[0];
+  _process() {
+    if (this._results.length)
+      return this._results;
 
-  return results;
-};
+    this._$('table').each((i, element) => this._processTable(i, element));
 
-function processTable($, table, options) {
-  const headers = buildHeaders($, table, options);
+    return this._results;
+  }
 
-  let tableJson = [];
-  $(table).find('tr').each((i, element) => tableJson.push(processRow($, element, options, headers)));
+  _processTable(tableIndex, table) {
+    this._results[tableIndex] = [];
+    this._buildHeaders(tableIndex, table);
 
-  tableJson = pruneEmptyRows(tableJson);
+    this._$(table).find('tr').each((i, element) => this._processRow(tableIndex, i, element));
+    this._pruneEmptyRows(tableIndex);
+  }
 
-  return tableJson;
-}
+  _processRow(tableIndex, index, row) {
+    this._results[tableIndex][index] = {};
 
-function processRow($, row, options, headers) {
-  let rowJson = {};
-
-  $(row).find('td').each((i, cell) => {
-    rowJson[headers[i] || (i + 1)] = $(cell).text().trim();
-  });
-
-  return rowJson;
-}
-
-function buildHeaders($, table, options) {
-  let headers = [];
-
-  $(table).find('tr').each((i, row) => {
-    $(row).find('th').each((j, cell) => {
-      headers[j] = $(cell).text().trim();
+    this._$(row).find('td').each((i, cell) => {
+      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)] = this._$(cell).text().trim();
     });
-  });
+  }
 
-  return headers;
+  _buildHeaders(index, table) {
+    this._headers[index] = [];
+
+    this._$(table).find('tr').each((i, row) => {
+      this._$(row).find('th').each((j, cell) => {
+        this._headers[index][j] = this._$(cell).text().trim();
+      });
+    });
+  }
+
+  _pruneEmptyRows(tableIndex) {
+    this._results[tableIndex] = this._results[tableIndex].filter(t => Object.keys(t).length);
+  }
 }
 
-function pruneEmptyRows(table) {
-  return table.filter(t => Object.keys(t).length);
-}
+module.exports = HtmlTableToJson;

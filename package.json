@@ -1,7 +1,7 @@
 {
   "name": "html-table-to-json",
   "version": "0.0.1",
-  "description": "",
+  "description": "Extracts all tables within a provided html snippet and converts them to JSON objects.",
   "license": "MIT",
   "repository": "brandon93s/html-table-to-json",
   "author": {
