@@ -1,10 +1,10 @@
-declare module "html-table-to-json" {
-  import * as cheerio from 'cheerio';
+/// <reference types="cheerio" />
 
+declare module "html-table-to-json" {
   class HtmlTableToJson {
-    headers: Array<any>;
-    results: Array<any>;
-    count: number;
+    readonly headers: Array<any>;
+    readonly results: Array<any>;
+    readonly count: number;
 
     constructor(html: string, opts?: Object);
 

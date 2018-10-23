@@ -24,7 +24,7 @@ const singleWithHeaderRow = `<table><tr><th>${h1}</th><th>${h2}</th><th>${h3}</t
 test('extracts headers correctly', t => {
   const toString = value => value + ''
 
-  const headers = new HtmlTableToJson(singleWithHeaderRow)._headers[0]
+  const headers = new HtmlTableToJson(singleWithHeaderRow).headers[0]
 
   t.is(headers[0], toString(h1))
   t.is(headers[1], toString(h2))
