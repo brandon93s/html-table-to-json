@@ -29,6 +29,10 @@ class HtmlTableToJson {
     return this._results
   }
 
+  get headers () {
+    return this._headers
+  }
+
   _process () {
     if (this._results.length) { return this._results }
 
