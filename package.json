@@ -3,11 +3,9 @@
   "version": "0.4.1",
   "description": "Extracts all tables within a provided html snippet and converts them to JSON objects.",
   "license": "MIT",
-  "types": "index.d.ts",
   "repository": "brandon93s/html-table-to-json",
   "author": {
     "name": "Brandon Smith",
-    "email": "brandon93s@gmail.com",
     "url": "github.com/brandon93s"
   },
   "engines": {
@@ -17,8 +15,7 @@
     "test": "ava --verbose"
   },
   "files": [
-    "index.js",
-    "index.d.ts"
+    "index.js"
   ],
   "keywords": [
     "html",
@@ -26,11 +23,10 @@
     "json"
   ],
   "dependencies": {
-    "@types/cheerio": "^0.22.9",
-    "cheerio": "^1.0.0-rc.2"
+    "cheerio": "^1.0.0-rc.3"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^3.0.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.10.0",

@@ -2,12 +2,10 @@
 
 > Extracts tables from a provided html snippet and converts them to JSON objects
 
-*Note: Currently always returns an array of results regardless of table count*
-
 ## Install
 
 ```
-$ npm install --save html-table-to-json
+$ npm install html-table-to-json
 ```
 
 
@@ -16,7 +14,7 @@ $ npm install --save html-table-to-json
 ```js
 const HtmlTableToJson = require('html-table-to-json');
 
-const jsonTables = new HtmlTableToJson(`
+const jsonTables = HtmlTableToJson.parse(`
         <table>
             <tr>
                 <th>Animal</th>
@@ -51,8 +49,7 @@ console.log(jsonTables.count);
 
 ## API
 
-### new HtmlTableToJson(input [,options])
-### HtmlTableToJson.factory(input [,options])
+### HtmlTableToJson.parse(input [,options])
 
 #### input
 
@@ -62,8 +59,25 @@ Any html snippet.
 
 #### options
 
-##### // todo
+Type: `object`
 
+##### values
+
+Type: `bool`
+
+Return table rows as value arrays:
+
+```js
+/* => [[
+ *      ['Unicorn', 'Pink', 'Billy'],
+ *      ['Walrus', 'Orange', 'Sue']
+ *    ]]
+ */
+```
+
+## Headers
+
+HtmlTableToJson extracts table headers ( `th` ) to be used as JSON object keys.  The first row is used when no `th` elements are present.
 
 ## License
 

@@ -3,7 +3,7 @@
 const cheerio = require('cheerio')
 
 class HtmlTableToJson {
-  constructor (html, opts) {
+  constructor (html, opts = {}) {
     if (typeof html !== 'string') { throw new TypeError('html input must be a string') }
 
     this.html = html
@@ -14,10 +14,12 @@ class HtmlTableToJson {
     this._headers = []
     this._count = null
 
+    this._firstRowUsedAsHeaders = []
+
     this._process()
   }
 
-  static factory (html, opts) {
+  static parse (html, opts) {
     return new HtmlTableToJson(html, opts)
   }
 
@@ -26,7 +28,9 @@ class HtmlTableToJson {
   }
 
   get results () {
-    return this._results
+    return this.opts.values === true
+      ? this._results.map(result => result.map(Object.values))
+      : this._results
   }
 
   get headers () {
@@ -50,6 +54,8 @@ class HtmlTableToJson {
   }
 
   _processRow (tableIndex, index, row) {
+    if (index === 0 && this._firstRowUsedAsHeaders[tableIndex] === true) return
+
     this._results[tableIndex][index] = {}
 
     this._$(row).find('td').each((i, cell) => {
@@ -64,6 +70,13 @@ class HtmlTableToJson {
       this._$(row).find('th').each((j, cell) => {
         this._headers[index][j] = this._$(cell).text().trim()
       })
+    })
+
+    if (this._headers[index].length) return
+
+    this._firstRowUsedAsHeaders[index] = true
+    this._$(table).find('tr').first().find('td').each((j, cell) => {
+      this._headers[index][j] = this._$(cell).text().trim()
     })
   }
 
