@@ -68,6 +68,7 @@ Type: `bool`
 Return table rows as value arrays:
 
 ```js
+// HtmlTableToJson.parse(html, { values: true })
 /* => [[
  *      ['Unicorn', 'Pink', 'Billy'],
  *      ['Walrus', 'Orange', 'Sue']
