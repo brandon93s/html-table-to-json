@@ -12,7 +12,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "test": "ava --verbose"
+    "test": "xo && ava"
   },
   "files": [
     "index.js"
@@ -26,12 +26,10 @@
     "cheerio": "^1.0.0-rc.3"
   },
   "devDependencies": {
-    "ava": "^3.0.0",
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.10.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1"
-  }
+    "ava": "^3.12.1",
+    "xo": "^0.33.0"
+	},
+	"xo": {
+		"semicolon": false
+	}
 }

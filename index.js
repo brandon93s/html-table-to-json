@@ -3,86 +3,98 @@
 const cheerio = require('cheerio')
 
 class HtmlTableToJson {
-  constructor (html, opts = {}) {
-    if (typeof html !== 'string') { throw new TypeError('html input must be a string') }
+	constructor(html, options = {}) {
+		if (typeof html !== 'string') {
+			throw new TypeError('html input must be a string')
+		}
 
-    this.html = html
-    this.opts = opts
+		this.html = html
+		this.opts = options
 
-    this._$ = cheerio.load(this.html)
-    this._results = []
-    this._headers = []
-    this._count = null
+		this._$ = cheerio.load(this.html)
+		this._results = []
+		this._headers = []
+		this._count = null
 
-    this._firstRowUsedAsHeaders = []
+		this._firstRowUsedAsHeaders = []
 
-    this._process()
-  }
+		this._process()
+	}
 
-  static parse (html, opts) {
-    return new HtmlTableToJson(html, opts)
-  }
+	static parse(html, options) {
+		return new HtmlTableToJson(html, options)
+	}
 
-  get count () {
-    return Number.isInteger(this._count) ? this._count : (this._count = this._$('table').get().length)
-  }
+	get count() {
+		if (Number.isInteger(this._count) === false) {
+			this._count = this._$('table').get().length
+		}
 
-  get results () {
-    return this.opts.values === true
-      ? this._results.map(result => result.map(Object.values))
-      : this._results
-  }
+		return this._count
+	}
 
-  get headers () {
-    return this._headers
-  }
+	get results() {
+		return this.opts.values === true ?
+			this._results.map(result => result.map(r => Object.values(r))) :
+			this._results
+	}
 
-  _process () {
-    if (this._results.length) { return this._results }
+	get headers() {
+		return this._headers
+	}
 
-    this._$('table').each((i, element) => this._processTable(i, element))
+	_process() {
+		if (this._results.length > 0) {
+			return this._results
+		}
 
-    return this._results
-  }
+		this._$('table').each((i, element) => this._processTable(i, element))
 
-  _processTable (tableIndex, table) {
-    this._results[tableIndex] = []
-    this._buildHeaders(tableIndex, table)
+		return this._results
+	}
 
-    this._$(table).find('tr').each((i, element) => this._processRow(tableIndex, i, element))
-    this._pruneEmptyRows(tableIndex)
-  }
+	_processTable(tableIndex, table) {
+		this._results[tableIndex] = []
+		this._buildHeaders(tableIndex, table)
 
-  _processRow (tableIndex, index, row) {
-    if (index === 0 && this._firstRowUsedAsHeaders[tableIndex] === true) return
+		this._$(table).find('tr').each((i, element) => this._processRow(tableIndex, i, element))
+		this._pruneEmptyRows(tableIndex)
+	}
 
-    this._results[tableIndex][index] = {}
+	_processRow(tableIndex, index, row) {
+		if (index === 0 && this._firstRowUsedAsHeaders[tableIndex] === true) {
+			return
+		}
 
-    this._$(row).find('td').each((i, cell) => {
-      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)] = this._$(cell).text().trim()
-    })
-  }
+		this._results[tableIndex][index] = {}
 
-  _buildHeaders (index, table) {
-    this._headers[index] = []
+		this._$(row).find('td').each((i, cell) => {
+			this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)] = this._$(cell).text().trim()
+		})
+	}
 
-    this._$(table).find('tr').each((i, row) => {
-      this._$(row).find('th').each((j, cell) => {
-        this._headers[index][j] = this._$(cell).text().trim()
-      })
-    })
+	_buildHeaders(index, table) {
+		this._headers[index] = []
 
-    if (this._headers[index].length) return
+		this._$(table).find('tr').each((i, row) => {
+			this._$(row).find('th').each((j, cell) => {
+				this._headers[index][j] = this._$(cell).text().trim()
+			})
+		})
 
-    this._firstRowUsedAsHeaders[index] = true
-    this._$(table).find('tr').first().find('td').each((j, cell) => {
-      this._headers[index][j] = this._$(cell).text().trim()
-    })
-  }
+		if (this._headers[index].length > 0) {
+			return
+		}
 
-  _pruneEmptyRows (tableIndex) {
-    this._results[tableIndex] = this._results[tableIndex].filter(t => Object.keys(t).length)
-  }
+		this._firstRowUsedAsHeaders[index] = true
+		this._$(table).find('tr').first().find('td').each((j, cell) => {
+			this._headers[index][j] = this._$(cell).text().trim()
+		})
+	}
+
+	_pruneEmptyRows(tableIndex) {
+		this._results[tableIndex] = this._results[tableIndex].filter(t => Object.keys(t).length)
+	}
 }
 
 module.exports = HtmlTableToJson
