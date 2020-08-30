@@ -1,33 +1,33 @@
 {
-  "name": "html-table-to-json",
-  "version": "1.0.0",
-  "description": "Extracts all tables within a provided html snippet and converts them to JSON objects.",
-  "license": "MIT",
-  "repository": "brandon93s/html-table-to-json",
-  "author": {
-    "name": "Brandon Smith",
-    "url": "github.com/brandon93s"
-  },
-  "engines": {
-    "node": ">=10.0.0"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "html",
-    "table",
-    "json"
-  ],
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.3"
-  },
-  "devDependencies": {
-    "ava": "^3.12.1",
-    "xo": "^0.33.0"
+	"name": "html-table-to-json",
+	"version": "1.0.0",
+	"description": "Extracts all tables within a provided html snippet and converts them to JSON objects.",
+	"license": "MIT",
+	"repository": "brandon93s/html-table-to-json",
+	"author": {
+		"name": "Brandon Smith",
+		"url": "github.com/brandon93s"
+	},
+	"engines": {
+		"node": ">=10.0.0"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"html",
+		"table",
+		"json"
+	],
+	"dependencies": {
+		"cheerio": "^1.0.0-rc.3"
+	},
+	"devDependencies": {
+		"ava": "^3.12.1",
+		"xo": "^0.33.0"
 	},
 	"xo": {
 		"semicolon": false
